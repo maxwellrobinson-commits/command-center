@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maxwell's Command Center</title>
+<style>
+  :root {
+    --bg: #f8f9fb;
+    --surface: #ffffff;
+    --surface-hover: #f1f3f9;
+    --text: #1a1d23;
+    --text-secondary: #5f6577;
+    --text-tertiary: #9197a6;
+    --accent: #4f6ef7;
+    --accent-light: #eef1fe;
+    --accent-glow: rgba(79,110,247,0.15);
+    --green: #22c55e;
+    --green-light: #ecfdf5;
+    --amber: #f59e0b;
+    --amber-light: #fffbeb;
+    --border: #e8eaef;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.08);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  [data-theme="dark"] {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface-hover: #242836;
+    --text: #e8eaef;
+    --text-secondary: #9197a6;
+    --text-tertiary: #5f6577;
+    --accent: #6b8aff;
+    --accent-light: #1e2440;
+    --accent-glow: rgba(107,138,255,0.2);
+    --green: #4ade80;
+    --green-light: #0a2618;
+    --amber: #fbbf24;
+    --amber-light: #2a1f0a;
+    --border: #2a2e3a;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.4);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.6;
+    min-height: 100vh; transition: background var(--transition), color var(--transition);
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 30% 20%, var(--accent-glow) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(34,197,94,0.06) 0%, transparent 50%);
+    animation: bgShift 20s ease-in-out infinite alternate; z-index: -1; pointer-events: none;
+  }
+  @keyframes bgShift { 0%{transform:translate(0,0)} 100%{transform:translate(-5%,-3%)} }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+
+  /* HEADER */
+  .header { display:flex; align-items:center; justify-content:space-between; margin-bottom:32px; flex-wrap:wrap; gap:16px; }
+  .header-left { display:flex; align-items:center; gap:16px; }
+  .logo { width:48px; height:48px; background:linear-gradient(135deg,var(--accent),#8b5cf6); border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:22px; color:white; box-shadow:0 4px 16px rgba(79,110,247,0.3); }
+  .header-title h1 { font-size:22px; font-weight:700; letter-spacing:-0.3px; }
+  .header-title p { font-size:13px; color:var(--text-tertiary); margin-top:1px; }
+  .header-right { display:flex; align-items:center; gap:10px; }
+  .theme-toggle { width:40px; height:40px; border-radius:12px; border:1px solid var(--border); background:var(--surface); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; transition:all var(--transition); color:var(--text-secondary); }
+  .theme-toggle:hover { background:var(--surface-hover); border-color:var(--accent); color:var(--accent); transform:scale(1.05); }
+  .refresh-badge { display:flex; align-items:center; gap:6px; padding:8px 14px; background:var(--green-light); color:var(--green); border-radius:20px; font-size:12px; font-weight:600; }
+  .refresh-badge .dot { width:7px; height:7px; background:var(--green); border-radius:50%; animation:pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+  /* STATS */
+  .stats-bar { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-bottom:28px; }
+  .stat-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px 18px; transition:all var(--transition); }
+  .stat-card:hover { border-color:var(--accent); box-shadow:var(--shadow-md); transform:translateY(-1px); }
+  .stat-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-tertiary); margin-bottom:6px; }
+  .stat-value { font-size:26px; font-weight:700; color:var(--text); letter-spacing:-0.5px; }
+  .stat-value.accent { color:var(--accent); }
+  .stat-value.green { color:var(--green); }
+  .stat-value.amber { color:var(--amber); }
+
+  /* SECTION */
+  .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+  .section-title { font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-tertiary); }
+  .tasks-grid { display:grid; gap:16px; margin-bottom:40px; }
+
+  /* CARDS */
+  .task-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; transition:all var(--transition); animation:cardIn 0.5s ease-out backwards; }
+  .task-card:nth-child(1){animation-delay:0.05s} .task-card:nth-child(2){animation-delay:0.1s} .task-card:nth-child(3){animation-delay:0.15s} .task-card:nth-child(4){animation-delay:0.2s} .task-card:nth-child(5){animation-delay:0.25s}
+  @keyframes cardIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+  .task-card:hover { border-color:var(--accent); box-shadow:var(--shadow-lg); transform:translateY(-2px); }
+  .task-card-header { display:flex; align-items:center; justify-content:space-between; padding:20px 24px 0; cursor:pointer; gap:12px; }
+  .task-card-header-left { display:flex; align-items:center; gap:14px; flex:1; min-width:0; }
+  .task-icon { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+  .task-icon.job { background:linear-gradient(135deg,#3b82f6,#2563eb); color:white; }
+  .task-icon.network { background:linear-gradient(135deg,#8b5cf6,#7c3aed); color:white; }
+  .task-icon.meeting { background:linear-gradient(135deg,#f59e0b,#d97706); color:white; }
+  .task-icon.riddle { background:linear-gradient(135deg,#ec4899,#db2777); color:white; }
+  .task-icon.ninjago { background:linear-gradient(135deg,#22c55e,#16a34a); color:white; }
+  .task-info { flex:1; min-width:0; }
+  .task-name { font-size:17px; font-weight:650; margin-bottom:2px; letter-spacing:-0.2px; }
+  .task-schedule { font-size:13px; color:var(--text-tertiary); }
+  .task-card-header-right { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+  .status-badge { display:inline-flex; align-items:center; gap:5px; padding:5px 12px; border-radius:20px; font-size:12px; font-weight:600; }
+  .status-badge.active { background:var(--green-light); color:var(--green); }
+  .status-badge.active .dot { width:6px; height:6px; background:var(--green); border-radius:50%; animation:pulse 2s ease-in-out infinite; }
+  .expand-btn { width:32px; height:32px; border-radius:8px; border:none; background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-tertiary); font-size:18px; transition:all var(--transition); }
+  .expand-btn:hover { background:var(--surface-hover); color:var(--accent); }
+  .expand-btn svg { width:18px; height:18px; transition:transform 0.3s ease; }
+  .task-card.expanded .expand-btn svg { transform:rotate(180deg); }
+
+  /* META */
+  .task-meta { display:flex; gap:20px; padding:12px 24px 16px; flex-wrap:wrap; }
+  .meta-item { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text-secondary); }
+  .meta-item svg { width:14px; height:14px; opacity:0.6; }
+  .meta-item .countdown { font-weight:600; color:var(--accent); }
+
+  /* EXPANDABLE */
+  .task-content { max-height:0; overflow:hidden; transition:max-height 0.4s ease; }
+  .task-card.expanded .task-content { max-height:5000px; }
+  .task-content-inner { padding:0 24px 24px; border-top:1px solid var(--border); padding-top:20px; }
+
+  /* ═══ TABS ═══ */
+  .content-tabs { display:flex; gap:0; margin-bottom:16px; border-bottom:2px solid var(--border); }
+  .content-tab {
+    padding:8px 18px; font-size:13px; font-weight:600; color:var(--text-tertiary);
+    cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-2px;
+    transition:all var(--transition); background:none; border-top:none; border-left:none; border-right:none;
+    display:flex; align-items:center; gap:6px;
+  }
+  .content-tab:hover { color:var(--text-secondary); }
+  .content-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+  .content-tab .tab-count {
+    background:var(--surface-hover); color:var(--text-tertiary); font-size:11px;
+    padding:1px 7px; border-radius:10px; font-weight:700;
+  }
+  .content-tab.active .tab-count { background:var(--accent-light); color:var(--accent); }
+  .tab-panel { display:none; }
+  .tab-panel.active { display:block; animation:fadeIn 0.25s ease-out; }
+
+  /* OUTPUT */
+  .latest-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:var(--accent); margin-bottom:12px; }
+  .latest-output { font-size:14px; line-height:1.7; color:var(--text-secondary); white-space:pre-wrap; }
+  .latest-output strong, .latest-output b { color:var(--text); font-weight:600; }
+  .latest-output .highlight-box { background:var(--accent-light); border-left:3px solid var(--accent); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:12px 0; font-size:14px; line-height:1.7; }
+  .latest-output blockquote { background:var(--accent-light); border-left:3px solid var(--accent); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:12px 0; font-style:italic; }
+
+  /* ═══ HISTORY ENTRIES ═══ */
+  .history-list { display:flex; flex-direction:column; gap:0; }
+  .history-entry {
+    padding:16px 0; border-bottom:1px solid var(--border); cursor:pointer;
+    transition:all var(--transition);
+  }
+  .history-entry:last-child { border-bottom:none; }
+  .history-entry-header { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .history-entry-left { display:flex; align-items:center; gap:10px; flex:1; min-width:0; }
+  .history-date {
+    font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;
+    color:var(--text-tertiary); white-space:nowrap;
+  }
+  .history-date-badge {
+    font-size:11px; font-weight:600; padding:3px 10px; border-radius:12px;
+    background:var(--surface-hover); color:var(--text-secondary); white-space:nowrap; flex-shrink:0;
+  }
+  .history-headline {
+    font-size:14px; font-weight:600; color:var(--text); white-space:nowrap;
+    overflow:hidden; text-overflow:ellipsis;
+  }
+  .history-expand-icon {
+    width:20px; height:20px; color:var(--text-tertiary); flex-shrink:0;
+    transition:transform 0.3s ease;
+  }
+  .history-entry.open .history-expand-icon { transform:rotate(180deg); }
+  .history-detail {
+    max-height:0; overflow:hidden; transition:max-height 0.35s ease;
+  }
+  .history-entry.open .history-detail { max-height:2000px; }
+  .history-detail-inner {
+    padding-top:12px; font-size:14px; line-height:1.7; color:var(--text-secondary); white-space:pre-wrap;
+  }
+  .history-detail-inner strong { color:var(--text); font-weight:600; }
+  .history-detail-inner .highlight-box { background:var(--accent-light); border-left:3px solid var(--accent); padding:14px 18px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:12px 0; font-size:14px; line-height:1.7; }
+
+  /* TIMELINE */
+  .timeline-section { margin-top:16px; }
+  .timeline { position:relative; padding-left:28px; }
+  .timeline::before { content:''; position:absolute; left:9px; top:6px; bottom:6px; width:2px; background:var(--border); border-radius:1px; }
+  .timeline-item { position:relative; padding-bottom:20px; animation:fadeIn 0.3s ease-out backwards; }
+  .timeline-item::before { content:''; position:absolute; left:-22px; top:7px; width:10px; height:10px; border-radius:50%; border:2px solid var(--accent); background:var(--surface); }
+  .timeline-item:first-child::before { background:var(--accent); box-shadow:0 0 0 4px var(--accent-glow); }
+  .timeline-time { font-size:11px; font-weight:600; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; }
+  .timeline-desc { font-size:14px; color:var(--text-secondary); line-height:1.6; }
+
+  /* FOOTER */
+  .footer { text-align:center; padding:32px 0 24px; font-size:12px; color:var(--text-tertiary); border-top:1px solid var(--border); }
+  .footer a { color:var(--accent); text-decoration:none; }
+
+  /* RESPONSIVE */
+  @media (max-width:768px) {
+    .container{padding:16px 14px} .header{margin-bottom:20px} .header-title h1{font-size:19px}
+    .stats-bar{grid-template-columns:repeat(2,1fr);gap:8px} .stat-card{padding:12px 14px} .stat-value{font-size:22px}
+    .task-card-header{padding:16px 18px 0} .task-meta{padding:10px 18px 14px;gap:14px}
+    .task-content-inner{padding:0 18px 18px;padding-top:16px}
+    .task-card-header-right{flex-direction:column;gap:6px;align-items:flex-end} .meta-item{font-size:11px}
+    .content-tab{padding:7px 12px;font-size:12px}
+  }
+  @media (max-width:420px) {
+    .stats-bar{grid-template-columns:1fr 1fr} .logo{width:40px;height:40px;font-size:18px}
+    .task-icon{width:38px;height:38px;font-size:17px} .task-name{font-size:15px}
+  }
+  ::-webkit-scrollbar{width:6px} ::-webkit-scrollbar-track{background:transparent} ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px} ::-webkit-scrollbar-thumb:hover{background:var(--text-tertiary)}
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  .no-output { color:var(--text-tertiary); font-style:italic; font-size:13px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="header-left">
+      <div class="logo">&#9889;</div>
+      <div class="header-title">
+        <h1>Maxwell's Command Center</h1>
+        <p id="header-subtitle">Your daily automations at a glance</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="refresh-badge"><span class="dot"></span><span id="last-updated">Updated just now</span></div>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme" id="theme-btn"></button>
+    </div>
+  </div>
+  <div class="stats-bar">
+    <div class="stat-card"><div class="stat-label">Active Tasks</div><div class="stat-value accent" id="stat-active">5</div></div>
+    <div class="stat-card"><div class="stat-label">Runs Today</div><div class="stat-value green" id="stat-runs">5</div></div>
+    <div class="stat-card"><div class="stat-label">Next Run</div><div class="stat-value" id="stat-next" style="font-size:18px;line-height:1.4;">—</div></div>
+    <div class="stat-card"><div class="stat-label">History Days</div><div class="stat-value amber" id="stat-history">4</div></div>
+  </div>
+  <div class="section-header"><div class="section-title">Scheduled Tasks</div></div>
+  <div class="tasks-grid" id="tasks-grid"></div>
+  <div class="section-header" style="margin-top:8px;"><div class="section-title">Upcoming Schedule</div></div>
+  <div class="timeline-section"><div class="timeline" id="timeline"></div></div>
+  <div class="footer">Powered by Claude &middot; Auto-refreshes with each scheduled run<br><span id="generated-at"></span></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+// TASK DATA — regenerated by the dashboard-refresh scheduled task
+// ═══════════════════════════════════════════════
+const TASKS = [
+  {
+    id: "daily-job-search",
+    name: "Daily Job Search",
+    description: "Curated roles with action plans — one top pick daily",
+    icon: "\u{1F4BC}",
+    iconClass: "job",
+    schedule: "Every day at 8:08 AM",
+    enabled: true,
+    nextRunAt: "2026-03-24T15:07:43.000Z",
+    lastRunAt: "2026-03-23T15:01:04.342Z",
+    latestOutput: `<strong>Latest Run \u2014 Mar 23, 2026</strong>
+
+The daily job search has been upgraded to a new format. Each morning it now delivers:
+
+<div class="highlight-box"><strong>\u{1F3AF} Ruthlessly curated list</strong> \u2014 roles only included if your background (CFO, Wharton MBA, SE Asia experience) genuinely matches all stated requirements. No aspirational long shots or filler.
+
+<strong>\u{1F3C6} Daily Top Pick</strong> \u2014 one role is called out as the highest priority to follow up on each day, so you know exactly where to focus first.
+
+<strong>\u{1F4CB} Action Plan per role:</strong>
+\u2022 <strong>Warm intro paths</strong> \u2014 specific LinkedIn search instructions for Wharton alumni, TBC network, SE Asia connections, and mutual investors
+\u2022 <strong>Application strategy</strong> \u2014 direct apply vs. reach out first, and exactly what talking points to lead with
+\u2022 <strong>Outreach hook</strong> \u2014 a suggested opener you can adapt and send today
+\u2022 <strong>Timeline & urgency</strong> \u2014 whether to act immediately or it can wait
+\u2022 <strong>Interview prep focus</strong> \u2014 2\u20133 specific things to be ready for at that company
+
+<strong>\u{1F50D} Honest fit assessment</strong> \u2014 including real gap callouts so you know what to prepare for.</div>
+
+<em>Format was updated today \u2014 run it manually from the scheduled tasks panel to preview the new output.</em>`,
+    history: [
+      {
+        date: "Mar 23, 2026",
+        headline: "Format upgraded \u2014 ruthless curation + daily top pick + action plans",
+        detail: `The task was upgraded to deliver a longer list of roles with one clear daily top pick highlighted prominently. Each role now includes warm intro paths (Wharton alumni, TBC network, SE Asia connections), application strategy, outreach hooks, timeline, and interview prep focus. Honest fit assessments with real gap callouts are included.`
+      }
+    ]
+  },
+  {
+    id: "networking",
+    name: "Daily Networking",
+    description: "Discover and connect with remarkable people",
+    icon: "\u{1F91D}",
+    iconClass: "network",
+    schedule: "Every day at 9:09 AM",
+    enabled: true,
+    nextRunAt: "2026-03-24T16:08:55.000Z",
+    lastRunAt: "2026-03-23T16:08:57.831Z",
+    latestOutput: `<strong>Today's Contact \u2014 Pratyush Kumar</strong>
+<em>Co-Founder, Sarvam AI \u00b7 PhD ETH Zurich \u00b7 Former faculty IIT Madras</em>
+
+Pratyush is the co-founder of Sarvam AI, a Bengaluru startup building India\u2019s sovereign AI stack. Their models just made headlines for <strong>beating ChatGPT and Google Gemini on Indian language benchmarks</strong>, with their Vision OCR tool hitting #1 globally.
+
+<div class="highlight-box"><strong>Why reach out:</strong> He\u2019s working on a genuinely different AI problem \u2014 multilingual, culturally grounded, enterprise-ready AI at scale. Great for expanding your perspective on where AI is heading globally.
+
+<strong>How to connect:</strong> Search \u201CPratyush Kumar Sarvam AI\u201D on LinkedIn, or visit <strong>sarvam.ai</strong>.</div>
+
+<strong>Previously surfaced:</strong> Deepti Juturu \u2014 also tracked with status in the networking dashboard.`,
+    history: [
+      {
+        date: "Mar 23, 2026",
+        headline: "Pratyush Kumar \u2014 Co-Founder, Sarvam AI (Bengaluru)",
+        detail: `Co-founder of Sarvam AI, building India\u2019s sovereign AI stack. PhD from ETH Zurich, former IIT Madras faculty. Their models beat ChatGPT and Gemini on Indian language benchmarks. Vision OCR tool hit #1 globally. Great for expanding perspective on global AI trends.
+
+<div class="highlight-box"><strong>How to connect:</strong> Search \u201CPratyush Kumar Sarvam AI\u201D on LinkedIn or visit sarvam.ai.</div>`
+      },
+      {
+        date: "Mar 22, 2026",
+        headline: "Katelyn Quaresma \u2014 Head of CFO Practice, Bespoke Partners (San Diego)",
+        detail: `Katelyn leads the CFO practice at Bespoke Partners \u2014 the go-to executive search firm for PE-backed companies (Thoma Bravo, Clearlake, TA Associates). She\u2019s San Diego-based, which gives a warm local angle. As a recruiter, she can surface unadvertised CFO roles before they hit public boards, which is how most PE-backed CFO searches work.
+
+<div class="highlight-box"><strong>Why her:</strong> You\u2019re targeting $400K+ CFO/VP Finance roles at PE-backed software and health-tech companies \u2014 she places exactly those roles. Your own job scan emails flagged that the focus should \u201Cshift to networking and outreach.\u201D A recruiter like Katelyn surfaces roles before they\u2019re public.</div>`
+      },
+      {
+        date: "Mar 21, 2026",
+        headline: "Gary Li \u2014 Penn Alum, Biotech (San Diego)",
+        detail: `You signed up for Gary\u2019s Penn Club San Diego fireside chat earlier this month \u2014 making this one of the warmest possible outreaches. Two weeks post-event is the ideal follow-up window. Biotech and healthcare tech are directly in your active job search pipeline.
+
+<div class="highlight-box"><strong>Draft message ready:</strong>
+\u201CHi Gary, I\u2019m Maxwell Robinson \u2014 fellow Penn alum, here in San Diego. I caught your biotech fireside chat with the Penn Club and really enjoyed it. I\u2019ve spent the last several years in senior finance roles and I\u2019m actively exploring my next chapter \u2014 with a focus on healthcare tech. If you\u2019re ever open to a quick coffee or call, I\u2019d welcome the chance. Go Quakers! \u2014 Max\u201D</div>`
+      },
+      {
+        date: "Mar 20, 2026",
+        headline: "Michael Zeller \u2014 Temasek (San Diego)",
+        detail: `You met Mike in person on March 17 at his San Diego office \u2014 making this the perfect window for a follow-up before the connection goes cold. Temasek is a high-value relationship given your CFO/finance background and Angie\u2019s Singapore connections. A short, warm follow-up note was drafted referencing Angie and leaving the door open for future collaboration.
+
+<div class="highlight-box"><strong>Contact:</strong> michaelzeller@us.temasek.com
+<strong>Status:</strong> Follow-up drafted and ready to send.</div>`
+      },
+      {
+        date: "Mar 20, 2026",
+        headline: "Bessie Wu \u2014 Contact surfaced with networking dashboard",
+        detail: `Bessie Wu was surfaced as a contact earlier on Mar 20. The networking dashboard was converted to an HTML file with the full contact log, status dropdowns, and a copy-message button for outreach.`
+      }
+    ]
+  },
+  {
+    id: "meetings",
+    name: "San Diego Meetings",
+    description: "Find relevant San Diego people to meet in person",
+    icon: "\u{1F4CD}",
+    iconClass: "meeting",
+    schedule: "Every day at 9:08 AM",
+    enabled: true,
+    nextRunAt: "2026-03-24T16:08:04.000Z",
+    lastRunAt: "2026-03-23T16:08:57.832Z",
+    latestOutput: `<strong>Today\u2019s Pick \u2014 Neal Bloom</strong>
+<em>Founder & GP, Rising Tide Partners \u00b7 San Diego investor</em>
+
+Neal is a San Diego-based investor deeply embedded in the local startup scene through Rising Tide Partners. He organizes exactly the kind of operator/founder/investor introductions that would benefit a senior finance executive.
+
+<div class="highlight-box"><strong>Why him:</strong> You already receive his newsletter, making this a <strong>warm outreach</strong>. As a senior finance executive (CFO background), you\u2019d be a valuable connection to his portfolio companies needing financial leadership.
+
+<strong>The angle:</strong> His recent Substack piece about tasting cultivated bluefin tuna at BlueNalu\u2019s facility with a live sushi chef \u2014 reference this specific piece for a natural conversation hook.
+
+<strong>Next step:</strong> Respond to one of his newsletter emails or reach out directly referencing that specific piece.</div>`,
+    history: [
+      {
+        date: "Mar 23, 2026",
+        headline: "Neal Bloom \u2014 Rising Tide Partners / Interlock Capital",
+        detail: `San Diego-based investor focused on food tech and growth-stage companies (BlueNalu is in his portfolio). You already subscribe to his Substack, giving a ready-made conversation hook: his piece on tasting cultivated bluefin tuna at BlueNalu. As a PE/M&A finance exec, you\u2019re exactly the profile his portfolio companies need at the CFO level. A draft outreach message was prepared in your voice (casual, direct, referencing the specific newsletter piece).`
+      },
+      {
+        date: "Mar 22, 2026",
+        headline: "Neal Bloom \u2014 Rising Tide Partners (repeat pick, refined pitch)",
+        detail: `Neal was also selected on Mar 22 based on the Substack newsletter angle. The coffee outreach dashboard was built with tracking: Draft Ready \u2192 Sent \u2192 Replied \u2192 Met. Copy button for grabbing the outreach message was included.
+
+<div class="highlight-box"><strong>Status:</strong> Draft outreach message ready. Dashboard tracks all picks and their progress over time.</div>`
+      }
+    ]
+  },
+  {
+    id: "riddles",
+    name: "Daily Riddle",
+    description: "A magical daily riddle spanning Harry Potter & KOTLC",
+    icon: "\u2728",
+    iconClass: "riddle",
+    schedule: "Every day at 9:01 AM",
+    enabled: true,
+    nextRunAt: "2026-03-24T16:00:44.000Z",
+    lastRunAt: "2026-03-23T16:08:57.832Z",
+    latestOutput: `<strong>Today\u2019s Riddle \u2014 March 23, 2026</strong>
+
+<blockquote>\u201CHermione would never leave home without me near, and Sophie brought me along to face her fear. I hold a thousand worlds within my spine\u2026\u201D</blockquote>
+
+<div class="highlight-box"><strong>Answer: A Book! \u{1F4DA}</strong>
+
+Today\u2019s riddle spans both <strong>Harry Potter</strong> and <strong>Keeper of the Lost Cities</strong>.</div>
+
+<strong>Dashboard features:</strong>
+\u2022 Magical starfield background with floating \u26A1\u{1F989}\u{1F33F} particles
+\u2022 \u201CReveal the Answer\u201D button with sparkle-burst animation
+\u2022 Three hint cards (one per universe + a super hint)
+\u2022 Fun facts connecting both series to the answer`,
+    history: [
+      {
+        date: "Mar 23, 2026",
+        headline: "\u201CHermione would never leave home without me\u2026\u201D \u2014 Answer: A Book \u{1F4DA}",
+        detail: `Riddle spanning Harry Potter and Keeper of the Lost Cities. Dashboard includes a magical starfield background with floating particles, a \u201CReveal the Answer\u201D button with sparkle-burst animation, three hint cards (one per universe + a super hint), and fun facts connecting both series to the answer.`
+      }
+    ]
+  },
+  {
+    id: "ninjago",
+    name: "Ninjago Fact",
+    description: "Daily fun Ninjago fact with interactive dashboard",
+    icon: "\u{1F977}",
+    iconClass: "ninjago",
+    schedule: "Every day at 9:05 AM",
+    enabled: true,
+    nextRunAt: "2026-03-24T16:04:56.000Z",
+    lastRunAt: "2026-03-23T17:16:00.055Z",
+    latestOutput: `<strong>Today\u2019s Fact \u2014 March 23, 2026</strong>
+<em>Day 82 of the year</em>
+
+<div class="highlight-box"><strong>\u{1F977} Zane the White Ninja</strong> is actually a robot called a <em>Nindroid</em> \u2014 and he didn\u2019t even know it himself until a special mission revealed the truth!
+
+Zane is the Ninja of Ice, and discovering his true nature was one of the most emotional moments in the entire Ninjago series. Despite being a robot, he has a heart as warm as any human ninja.</div>
+
+<em>Each day brings a new fact from the world of Ninjago, delivered in a fun interactive dashboard.</em>`,
+    history: [
+      {
+        date: "Mar 23, 2026",
+        headline: "Zane the White Ninja is actually a Nindroid (robot)!",
+        detail: `Zane is the Ninja of Ice and a robot called a Nindroid. He didn\u2019t know it himself until a special mission revealed the truth. Discovering his true nature was one of the most emotional moments in the series. Despite being a robot, he has a heart as warm as any human ninja.`
+      },
+      {
+        date: "Mar 22, 2026",
+        headline: "Cole is the Black Ninja \u2014 his power is Earth (and he loves cake! \u{1F382})",
+        detail: `Cole\u2019s elemental power is Earth, making him the strongest of all the ninja. His fun quirk: he loves cake more than anything! This was Day 1 of the Ninjago fact series. The dashboard launched with a dark space-ninja theme, a highlighted card for today\u2019s fact, a growing fact log, and a ninja powers reference guide.`
+      }
+    ]
+  }
+];
+
+// ═══════════════════════════════════════════════
+// THEME
+// ═══════════════════════════════════════════════
+function getTheme() {
+  try { return localStorage.getItem('dashboard-theme') || (window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light'); }
+  catch(e) { return 'light'; }
+}
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('theme-btn').textContent = t === 'dark' ? '\u2600\uFE0F' : '\u{1F319}';
+  try { localStorage.setItem('dashboard-theme', t); } catch(e) {}
+}
+function toggleTheme() { applyTheme(getTheme() === 'dark' ? 'light' : 'dark'); }
+applyTheme(getTheme());
+
+// ═══════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════
+function timeAgo(d) {
+  if (!d) return 'Never';
+  const diff = Date.now() - new Date(d).getTime(), m = Math.floor(diff/60000);
+  if (m < 1) return 'Just now'; if (m < 60) return m+'m ago';
+  const h = Math.floor(m/60); if (h < 24) return h+'h ago';
+  return Math.floor(h/24)+'d ago';
+}
+function timeUntil(d) {
+  if (!d) return '\u2014';
+  const diff = new Date(d).getTime() - Date.now();
+  if (diff < 0) return 'Imminent';
+  const h = Math.floor(diff/3600000), m = Math.floor((diff%3600000)/60000);
+  return h === 0 ? m+'m' : h+'h '+m+'m';
+}
+function formatDT(d) {
+  if (!d) return '\u2014';
+  return new Date(d).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',hour12:true,timeZoneName:'short'});
+}
+
+// ═══════════════════════════════════════════════
+// RENDER TASKS
+// ═══════════════════════════════════════════════
+function renderTasks() {
+  const grid = document.getElementById('tasks-grid');
+  grid.innerHTML = TASKS.map((t) => {
+    const histCount = (t.history||[]).length;
+    const historyItems = (t.history||[]).map((h, hi) => `
+      <div class="history-entry" onclick="toggleHistory(this, event)">
+        <div class="history-entry-header">
+          <div class="history-entry-left">
+            <span class="history-date-badge">${h.date}</span>
+            <span class="history-headline">${h.headline}</span>
+          </div>
+          <svg class="history-expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+        <div class="history-detail">
+          <div class="history-detail-inner">${h.detail}</div>
+        </div>
+      </div>
+    `).join('');
+
+    return `
+    <div class="task-card" id="card-${t.id}" onclick="toggleCard('${t.id}', event)">
+      <div class="task-card-header">
+        <div class="task-card-header-left">
+          <div class="task-icon ${t.iconClass}">${t.icon}</div>
+          <div class="task-info">
+            <div class="task-name">${t.name}</div>
+            <div class="task-schedule">${t.description}</div>
+          </div>
+        </div>
+        <div class="task-card-header-right">
+          <div class="status-badge active"><span class="dot"></span> Active</div>
+          <button class="expand-btn" aria-label="Expand">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+        </div>
+      </div>
+      <div class="task-meta">
+        <div class="meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          ${t.schedule}
+        </div>
+        <div class="meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+          Last: ${timeAgo(t.lastRunAt)}
+        </div>
+        <div class="meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          Next: <span class="countdown" data-next="${t.nextRunAt}">${timeUntil(t.nextRunAt)}</span>
+        </div>
+      </div>
+      <div class="task-content">
+        <div class="task-content-inner">
+          <div class="content-tabs">
+            <button class="content-tab active" onclick="switchTab(this, '${t.id}', 'today', event)">Today</button>
+            <button class="content-tab" onclick="switchTab(this, '${t.id}', 'history', event)">History <span class="tab-count">${histCount}</span></button>
+          </div>
+          <div class="tab-panel active" id="panel-today-${t.id}">
+            <div class="latest-output">${t.latestOutput || '<span class="no-output">No output yet.</span>'}</div>
+          </div>
+          <div class="tab-panel" id="panel-history-${t.id}">
+            ${histCount > 0
+              ? '<div class="history-list">' + historyItems + '</div>'
+              : '<span class="no-output">No history yet \u2014 history builds with each daily run.</span>'
+            }
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════
+// INTERACTIONS
+// ═══════════════════════════════════════════════
+function toggleCard(id, e) {
+  if (e && (e.target.closest('.task-content-inner') || e.target.closest('.content-tab'))) return;
+  document.getElementById('card-' + id).classList.toggle('expanded');
+}
+
+function switchTab(btn, taskId, tab, e) {
+  e.stopPropagation();
+  const card = document.getElementById('card-' + taskId);
+  card.querySelectorAll('.content-tab').forEach(t => t.classList.remove('active'));
+  card.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + tab + '-' + taskId).classList.add('active');
+}
+
+function toggleHistory(entry, e) {
+  e.stopPropagation();
+  entry.classList.toggle('open');
+}
+
+// ═══════════════════════════════════════════════
+// TIMELINE
+// ═══════════════════════════════════════════════
+function renderTimeline() {
+  const sorted = [...TASKS].filter(t=>t.nextRunAt).sort((a,b)=>new Date(a.nextRunAt)-new Date(b.nextRunAt));
+  document.getElementById('timeline').innerHTML = sorted.map((t,i) => `
+    <div class="timeline-item" style="animation-delay:${i*0.08}s">
+      <div class="timeline-time">${formatDT(t.nextRunAt)}</div>
+      <div class="timeline-desc">${t.icon} <strong>${t.name}</strong> \u2014 ${t.description}</div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════════
+// COUNTDOWNS
+// ═══════════════════════════════════════════════
+function updateCountdowns() {
+  document.querySelectorAll('.countdown[data-next]').forEach(el => { el.textContent = timeUntil(el.dataset.next); });
+  const soonest = TASKS.filter(t=>t.nextRunAt).sort((a,b)=>new Date(a.nextRunAt)-new Date(b.nextRunAt))[0];
+  if (soonest) document.getElementById('stat-next').innerHTML = soonest.icon + ' ' + timeUntil(soonest.nextRunAt);
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+renderTasks();
+renderTimeline();
+updateCountdowns();
+setInterval(updateCountdowns, 30000);
+
+// Count total history
+const totalHist = TASKS.reduce((sum, t) => sum + (t.history||[]).length, 0);
+document.getElementById('stat-history').textContent = totalHist;
+
+document.getElementById('generated-at').textContent = 'Dashboard generated: ' + new Date().toLocaleString();
+const now = new Date();
+document.getElementById('header-subtitle').textContent =
+  now.toLocaleDateString('en-US',{weekday:'long'}) + ', ' +
+  now.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+</script>
+</body>
+</html>
