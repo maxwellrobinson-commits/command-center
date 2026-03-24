@@ -217,6 +217,63 @@
   ::-webkit-scrollbar{width:6px} ::-webkit-scrollbar-track{background:transparent} ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px} ::-webkit-scrollbar-thumb:hover{background:var(--text-tertiary)}
   @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
   .no-output { color:var(--text-tertiary); font-style:italic; font-size:13px; }
+
+  /* ═══ CHAT WIDGET ═══ */
+  .chat-fab {
+    position:fixed; bottom:24px; right:24px; width:56px; height:56px;
+    background:linear-gradient(135deg,var(--accent),#8b5cf6); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    box-shadow:0 6px 24px rgba(79,110,247,0.4); z-index:1000;
+    transition:all 0.3s ease; font-size:24px; color:white; border:none;
+  }
+  .chat-fab:hover { transform:scale(1.1); box-shadow:0 8px 32px rgba(79,110,247,0.5); }
+  .chat-fab.open { transform:rotate(45deg) scale(1.1); }
+
+  .chat-panel {
+    position:fixed; bottom:92px; right:24px; width:380px; max-height:500px;
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    box-shadow:var(--shadow-lg); z-index:1000; display:none; flex-direction:column;
+    overflow:hidden; animation:chatIn 0.25s ease-out;
+  }
+  .chat-panel.open { display:flex; }
+  @keyframes chatIn { from{opacity:0;transform:translateY(12px) scale(0.95)} to{opacity:1;transform:translateY(0) scale(1)} }
+
+  .chat-header {
+    padding:16px 20px; border-bottom:1px solid var(--border);
+    display:flex; align-items:center; gap:10px;
+  }
+  .chat-header-icon { font-size:20px; }
+  .chat-header-text h3 { font-size:15px; font-weight:650; letter-spacing:-0.2px; }
+  .chat-header-text p { font-size:12px; color:var(--text-tertiary); }
+
+  .chat-body { padding:16px 20px; flex:1; overflow-y:auto; }
+  .chat-body p { font-size:13px; color:var(--text-secondary); margin-bottom:12px; line-height:1.6; }
+
+  .chat-textarea {
+    width:100%; min-height:80px; max-height:150px; padding:12px 14px;
+    background:var(--surface-hover); border:1px solid var(--border); border-radius:var(--radius-sm);
+    font-family:inherit; font-size:14px; color:var(--text); resize:vertical;
+    transition:border-color var(--transition); line-height:1.5;
+  }
+  .chat-textarea:focus { outline:none; border-color:var(--accent); }
+  .chat-textarea::placeholder { color:var(--text-tertiary); }
+
+  .chat-footer { padding:12px 20px; border-top:1px solid var(--border); display:flex; gap:8px; align-items:center; }
+  .chat-send {
+    padding:8px 20px; background:var(--accent); color:white; border:none;
+    border-radius:20px; font-size:13px; font-weight:600; cursor:pointer;
+    transition:all var(--transition); flex-shrink:0;
+  }
+  .chat-send:hover { filter:brightness(1.1); transform:translateY(-1px); }
+  .chat-send:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+  .chat-status { font-size:12px; color:var(--green); font-weight:600; display:none; }
+  .chat-status.show { display:block; }
+  .chat-status.error { color:#ef4444; }
+
+  @media (max-width:420px) {
+    .chat-panel { right:12px; left:12px; width:auto; bottom:84px; }
+    .chat-fab { bottom:16px; right:16px; width:50px; height:50px; font-size:20px; }
+  }
 </style>
 </head>
 <body>
@@ -617,6 +674,58 @@ const now = new Date();
 document.getElementById('header-subtitle').textContent =
   now.toLocaleDateString('en-US',{weekday:'long'}) + ', ' +
   now.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+// ═══════════════════════════════════════════════
+// CHAT WIDGET
+// ═══════════════════════════════════════════════
+const GITHUB_REPO = 'maxwellrobinson-commits/command-center';
+
+function toggleChat() {
+  const panel = document.getElementById('chat-panel');
+  const fab = document.getElementById('chat-fab');
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open');
+  fab.classList.toggle('open');
+  if (!isOpen) document.getElementById('chat-input').focus();
+}
+
+function sendMessage() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  const title = encodeURIComponent('Dashboard Request: ' + msg.substring(0, 60) + (msg.length > 60 ? '...' : ''));
+  const body = encodeURIComponent('**Request from Command Center Dashboard**\n\n' + msg + '\n\n---\n*Submitted: ' + new Date().toLocaleString() + '*');
+  const labels = encodeURIComponent('dashboard-request');
+  const url = 'https://github.com/' + GITHUB_REPO + '/issues/new?title=' + title + '&body=' + body + '&labels=' + labels;
+
+  window.open(url, '_blank');
+  input.value = '';
+
+  const status = document.getElementById('chat-status');
+  status.textContent = '\u2713 Issue page opened \u2014 click Submit to send!';
+  status.className = 'chat-status show';
+  setTimeout(() => { status.className = 'chat-status'; }, 5000);
+}
 </script>
+
+<!-- CHAT WIDGET -->
+<button class="chat-fab" id="chat-fab" onclick="toggleChat()" aria-label="Send a request">&#x1F4AC;</button>
+<div class="chat-panel" id="chat-panel">
+  <div class="chat-header">
+    <span class="chat-header-icon">&#x1F4AC;</span>
+    <div class="chat-header-text">
+      <h3>Talk to Claude</h3>
+      <p>Send a request to update this dashboard</p>
+    </div>
+  </div>
+  <div class="chat-body">
+    <p>Type a message below and Claude will see it on the next scheduled run. You can ask to change the layout, add new tasks, update content, or anything else about this dashboard.</p>
+    <textarea class="chat-textarea" id="chat-input" placeholder="e.g. Add a section for weekly goals..." onkeydown="if(event.key==='Enter'&&event.metaKey)sendMessage()"></textarea>
+  </div>
+  <div class="chat-footer">
+    <button class="chat-send" id="chat-send-btn" onclick="sendMessage()">Send</button>
+    <span class="chat-status" id="chat-status"></span>
+  </div>
+</div>
 </body>
 </html>
