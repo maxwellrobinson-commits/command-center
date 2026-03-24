@@ -352,8 +352,8 @@
     </div>
   </div>
   <div class="stats-bar">
-    <div class="stat-card"><div class="stat-label">Active Tasks</div><div class="stat-value accent" id="stat-active">5</div></div>
-    <div class="stat-card"><div class="stat-label">Runs Today</div><div class="stat-value green" id="stat-runs">5</div></div>
+    <div class="stat-card"><div class="stat-label">Active Tasks</div><div class="stat-value accent" id="stat-active">4</div></div>
+    <div class="stat-card"><div class="stat-label">Runs Today</div><div class="stat-value green" id="stat-runs">4</div></div>
     <div class="stat-card"><div class="stat-label">Next Run</div><div class="stat-value" id="stat-next" style="font-size:18px;line-height:1.4;">—</div></div>
     <div class="stat-card"><div class="stat-label">History Days</div><div class="stat-value amber" id="stat-history">4</div></div>
   </div>
@@ -373,34 +373,51 @@ const TASKS = [
     id: "daily-job-search",
     name: "Daily Job Search",
     description: "Curated roles with action plans — one top pick daily",
-    icon: "\u{1F4BC}",
+    icon: "📋",
     iconClass: "job",
     schedule: "Every day at 8:08 AM",
     enabled: true,
-    nextRunAt: "2026-03-24T15:07:43.000Z",
-    lastRunAt: "2026-03-23T15:01:04.342Z",
-    latestOutput: `<strong>Latest Run \u2014 Mar 23, 2026</strong>
+    nextRunAt: "2026-03-25T15:07:43.000Z",
+    lastRunAt: "2026-03-24T21:26:59.757Z",
+    latestOutput: `<strong>Latest Run — Mar 24, 2026</strong>
 
-The daily job search has been upgraded to a new format. Each morning it now delivers:
+<div class="highlight-box"><strong>🎯 Strategic Reframe:</strong> Your rare combination — Wharton MBA + Singapore PR + SE Asia operator + VC-backed CFO — commands $400K+. <strong>Stop selling yourself as "a CFO." Start pitching as "the executive who bridges US innovation and Asia's biggest markets."</strong></div>
 
-<div class="highlight-box"><strong>\u{1F3AF} Ruthlessly curated list</strong> \u2014 roles only included if your background (CFO, Wharton MBA, SE Asia experience) genuinely matches all stated requirements. No aspirational long shots or filler.
+<strong>🔥 Today's Top Picks:</strong>
 
-<strong>\u{1F3C6} Daily Top Pick</strong> \u2014 one role is called out as the highest priority to follow up on each day, so you know exactly where to focus first.
+<strong>1. Anthropic — Strategy &amp; Operations, Enterprise Business Partner</strong><br>
+<a href="https://job-boards.greenhouse.io/anthropic/jobs/5139423008" target="_blank">Apply →</a> · <em>AI company, SF · Strong fit for your strategic operator + AI-adjacent background</em>
 
-<strong>\u{1F4CB} Action Plan per role:</strong>
-\u2022 <strong>Warm intro paths</strong> \u2014 specific LinkedIn search instructions for Wharton alumni, TBC network, SE Asia connections, and mutual investors
-\u2022 <strong>Application strategy</strong> \u2014 direct apply vs. reach out first, and exactly what talking points to lead with
-\u2022 <strong>Outreach hook</strong> \u2014 a suggested opener you can adapt and send today
-\u2022 <strong>Timeline & urgency</strong> \u2014 whether to act immediately or it can wait
-\u2022 <strong>Interview prep focus</strong> \u2014 2\u20133 specific things to be ready for at that company
+<strong>2. Scale AI — Chief of Staff, Generative AI</strong><br>
+<a href="https://scale.com/careers/4642756005" target="_blank">Apply →</a> · <em>AI infrastructure · Ideal for your cross-functional ops background</em>
 
-<strong>\u{1F50D} Honest fit assessment</strong> \u2014 including real gap callouts so you know what to prepare for.</div>
+<strong>3. Endiatx CEO</strong> — You were their CFO in 2024. Email asking about a permanent role (template in dashboard).
 
-<em>Format was updated today \u2014 run it manually from the scheduled tasks panel to preview the new output.</em>`,
+<strong>4. Verge HealthTech</strong> — Call your existing partners to explore a full-time role and gather warm intros.
+
+<em>Full 16-company pipeline tracked in your Job Search Dashboard (Excel): Cambium Carbon, Calix, Modal, XRHealth, TurnKey Lender, Avenir, Jumio, Preply, Energy Exemplar, Kranz, Stratus, and more.</em>`,
     history: [
       {
+        date: "Mar 24, 2026",
+        headline: "🔥 Top picks: Anthropic Strategy & Ops + Scale AI Chief of Staff — strategic operator framing",
+        detail: `The AI headhunter completed a full audit of Maxwell's background (CV, LinkedIn, Substack, Gmail, Google Drive) and identified a key strategic reframe: stop targeting CFO-only roles and position as "the executive who bridges US innovation and Asia's biggest markets."
+
+Top picks today:
+• <strong>Anthropic</strong> — Strategy & Operations, Enterprise Business Partner (<a href="https://job-boards.greenhouse.io/anthropic/jobs/5139423008" target="_blank">link</a>)
+• <strong>Scale AI</strong> — Chief of Staff, Generative AI (<a href="https://scale.com/careers/4642756005" target="_blank">link</a>)
+
+Also flagged: reach out to Endiatx CEO (former employer) and Verge HealthTech partners. Full 16-company pipeline + April action plan + 5 outreach templates delivered in Job Search Dashboard (Excel). Gmail briefing draft created.
+
+<div class="highlight-box"><strong>5 urgent actions:</strong>
+1. Update LinkedIn headline to include "SE Asia Expert (Singapore PR)"
+2. Apply to Anthropic &amp; Scale AI today
+3. Email Endiatx CEO about permanent role
+4. Contact Arnold Partners, CFO Recruit, and SPMB
+5. Activate Wharton Southeast Asia Club alumni network</div>`
+      },
+      {
         date: "Mar 23, 2026",
-        headline: "Format upgraded \u2014 ruthless curation + daily top pick + action plans",
+        headline: "Format upgraded — ruthless curation + daily top pick + action plans",
         detail: `The task was upgraded to deliver a longer list of roles with one clear daily top pick highlighted prominently. Each role now includes warm intro paths (Wharton alumni, TBC network, SE Asia connections), application strategy, outreach hooks, timeline, and interview prep focus. Honest fit assessments with real gap callouts are included.`
       }
     ]
@@ -409,56 +426,63 @@ The daily job search has been upgraded to a new format. Each morning it now deli
     id: "networking",
     name: "Daily Networking",
     description: "Discover and connect with remarkable people",
-    icon: "\u{1F91D}",
+    icon: "🤝",
     iconClass: "network",
     schedule: "Every day at 9:09 AM",
     enabled: true,
-    nextRunAt: "2026-03-24T16:08:55.000Z",
-    lastRunAt: "2026-03-23T16:08:57.831Z",
-    latestOutput: `<strong>Today's Contact \u2014 Pratyush Kumar</strong>
-<em>Co-Founder, Sarvam AI \u00b7 PhD ETH Zurich \u00b7 Former faculty IIT Madras</em>
+    nextRunAt: "2026-03-25T16:08:55.000Z",
+    lastRunAt: "2026-03-24T16:01:08.892Z",
+    latestOutput: `<strong>Networking Dashboard Update — Mar 24, 2026</strong>
 
-Pratyush is the co-founder of Sarvam AI, a Bengaluru startup building India\u2019s sovereign AI stack. Their models just made headlines for <strong>beating ChatGPT and Google Gemini on Indian language benchmarks</strong>, with their Vision OCR tool hitting #1 globally.
+Every connection in your networking dashboard now has a clickable LinkedIn profile link.
 
-<div class="highlight-box"><strong>Why reach out:</strong> He\u2019s working on a genuinely different AI problem \u2014 multilingual, culturally grounded, enterprise-ready AI at scale. Great for expanding your perspective on where AI is heading globally.
+<div class="highlight-box"><strong>Pending inbound requests (direct profile URLs added):</strong>
+• <strong>Greg DePinto</strong> — LinkedIn profile linked
+• <strong>Mukesh Misra</strong> — LinkedIn profile linked
+• <strong>Khang Vu</strong> — LinkedIn profile linked
 
-<strong>How to connect:</strong> Search \u201CPratyush Kumar Sarvam AI\u201D on LinkedIn, or visit <strong>sarvam.ai</strong>.</div>
+<strong>Recent connections:</strong> Links pre-fill LinkedIn name searches — clicking goes straight to their profile.</div>
 
-<strong>Previously surfaced:</strong> Deepti Juturu \u2014 also tracked with status in the networking dashboard.`,
+"View Profile" button added to each connection card with LinkedIn icon. Previously surfaced: <strong>Pratyush Kumar</strong> (Co-Founder, Sarvam AI) also tracked with status.`,
     history: [
       {
+        date: "Mar 24, 2026",
+        headline: "LinkedIn links added to all connections — Greg DePinto, Mukesh Misra, Khang Vu, recent contacts",
+        detail: `The networking dashboard was upgraded so every name is now clickable and links to their LinkedIn profile. For the three pending inbound requests (Greg DePinto, Mukesh Misra, and Khang Vu), exact profile URLs were extracted from the invitation emails. For recent connections, links pre-fill LinkedIn name searches. Each connection card now has a "View Profile" button with the LinkedIn icon.`
+      },
+      {
         date: "Mar 23, 2026",
-        headline: "Pratyush Kumar \u2014 Co-Founder, Sarvam AI (Bengaluru)",
-        detail: `Co-founder of Sarvam AI, building India\u2019s sovereign AI stack. PhD from ETH Zurich, former IIT Madras faculty. Their models beat ChatGPT and Gemini on Indian language benchmarks. Vision OCR tool hit #1 globally. Great for expanding perspective on global AI trends.
+        headline: "Pratyush Kumar — Co-Founder, Sarvam AI (Bengaluru)",
+        detail: `Co-founder of Sarvam AI, building India's sovereign AI stack. PhD from ETH Zurich, former IIT Madras faculty. Their models beat ChatGPT and Gemini on Indian language benchmarks. Vision OCR tool hit #1 globally. Great for expanding perspective on global AI trends.
 
-<div class="highlight-box"><strong>How to connect:</strong> Search \u201CPratyush Kumar Sarvam AI\u201D on LinkedIn or visit sarvam.ai.</div>`
+<div class="highlight-box"><strong>How to connect:</strong> Search "Pratyush Kumar Sarvam AI" on LinkedIn or visit sarvam.ai.</div>`
       },
       {
         date: "Mar 22, 2026",
-        headline: "Katelyn Quaresma \u2014 Head of CFO Practice, Bespoke Partners (San Diego)",
-        detail: `Katelyn leads the CFO practice at Bespoke Partners \u2014 the go-to executive search firm for PE-backed companies (Thoma Bravo, Clearlake, TA Associates). She\u2019s San Diego-based, which gives a warm local angle. As a recruiter, she can surface unadvertised CFO roles before they hit public boards, which is how most PE-backed CFO searches work.
+        headline: "Katelyn Quaresma — Head of CFO Practice, Bespoke Partners (San Diego)",
+        detail: `Katelyn leads the CFO practice at Bespoke Partners — the go-to executive search firm for PE-backed companies (Thoma Bravo, Clearlake, TA Associates). She's San Diego-based, which gives a warm local angle. As a recruiter, she can surface unadvertised CFO roles before they hit public boards.
 
-<div class="highlight-box"><strong>Why her:</strong> You\u2019re targeting $400K+ CFO/VP Finance roles at PE-backed software and health-tech companies \u2014 she places exactly those roles. Your own job scan emails flagged that the focus should \u201Cshift to networking and outreach.\u201D A recruiter like Katelyn surfaces roles before they\u2019re public.</div>`
+<div class="highlight-box"><strong>Why her:</strong> You're targeting $400K+ CFO/VP Finance roles at PE-backed software and health-tech companies — she places exactly those roles.</div>`
       },
       {
         date: "Mar 21, 2026",
-        headline: "Gary Li \u2014 Penn Alum, Biotech (San Diego)",
-        detail: `You signed up for Gary\u2019s Penn Club San Diego fireside chat earlier this month \u2014 making this one of the warmest possible outreaches. Two weeks post-event is the ideal follow-up window. Biotech and healthcare tech are directly in your active job search pipeline.
+        headline: "Gary Li — Penn Alum, Biotech (San Diego)",
+        detail: `You signed up for Gary's Penn Club San Diego fireside chat earlier this month — making this one of the warmest possible outreaches. Two weeks post-event is the ideal follow-up window.
 
 <div class="highlight-box"><strong>Draft message ready:</strong>
-\u201CHi Gary, I\u2019m Maxwell Robinson \u2014 fellow Penn alum, here in San Diego. I caught your biotech fireside chat with the Penn Club and really enjoyed it. I\u2019ve spent the last several years in senior finance roles and I\u2019m actively exploring my next chapter \u2014 with a focus on healthcare tech. If you\u2019re ever open to a quick coffee or call, I\u2019d welcome the chance. Go Quakers! \u2014 Max\u201D</div>`
+"Hi Gary, I'm Maxwell Robinson — fellow Penn alum, here in San Diego. I caught your biotech fireside chat with the Penn Club and really enjoyed it. I've spent the last several years in senior finance roles and I'm actively exploring my next chapter — with a focus on healthcare tech. Go Quakers! — Max"</div>`
       },
       {
         date: "Mar 20, 2026",
-        headline: "Michael Zeller \u2014 Temasek (San Diego)",
-        detail: `You met Mike in person on March 17 at his San Diego office \u2014 making this the perfect window for a follow-up before the connection goes cold. Temasek is a high-value relationship given your CFO/finance background and Angie\u2019s Singapore connections. A short, warm follow-up note was drafted referencing Angie and leaving the door open for future collaboration.
+        headline: "Michael Zeller — Temasek (San Diego)",
+        detail: `You met Mike in person on March 17 at his San Diego office — making this the perfect window for a follow-up before the connection goes cold.
 
 <div class="highlight-box"><strong>Contact:</strong> michaelzeller@us.temasek.com
 <strong>Status:</strong> Follow-up drafted and ready to send.</div>`
       },
       {
         date: "Mar 20, 2026",
-        headline: "Bessie Wu \u2014 Contact surfaced with networking dashboard",
+        headline: "Bessie Wu — Contact surfaced with networking dashboard",
         detail: `Bessie Wu was surfaced as a contact earlier on Mar 20. The networking dashboard was converted to an HTML file with the full contact log, status dropdowns, and a copy-message button for outreach.`
       }
     ]
@@ -467,32 +491,37 @@ Pratyush is the co-founder of Sarvam AI, a Bengaluru startup building India\u201
     id: "meetings",
     name: "San Diego Meetings",
     description: "Find relevant San Diego people to meet in person",
-    icon: "\u{1F4CD}",
+    icon: "📍",
     iconClass: "meeting",
     schedule: "Every day at 9:08 AM",
     enabled: true,
-    nextRunAt: "2026-03-24T16:08:04.000Z",
-    lastRunAt: "2026-03-23T16:08:57.832Z",
-    latestOutput: `<strong>Today\u2019s Pick \u2014 Neal Bloom</strong>
-<em>Founder & GP, Rising Tide Partners \u00b7 San Diego investor</em>
+    nextRunAt: "2026-03-25T16:08:04.000Z",
+    lastRunAt: "2026-03-24T16:59:20.879Z",
+    latestOutput: `<strong>Today's Pick — Neal Bloom</strong>
+<em>Managing Partner, Rising Tide Partners · San Diego VC</em>
 
-Neal is a San Diego-based investor deeply embedded in the local startup scene through Rising Tide Partners. He organizes exactly the kind of operator/founder/investor introductions that would benefit a senior finance executive.
+Neal is one of San Diego's most connected tech ecosystem builders. He runs an early-stage VC fund ($250K–$2M), publishes a widely-read SD tech newsletter, and actively connects startups with the broader community.
 
-<div class="highlight-box"><strong>Why him:</strong> You already receive his newsletter, making this a <strong>warm outreach</strong>. As a senior finance executive (CFO background), you\u2019d be a valuable connection to his portfolio companies needing financial leadership.
+<div class="highlight-box"><strong>Status:</strong> You reached out — no reply yet. Options:
+• <strong>Follow up with Neal</strong> — a short, low-pressure bump after 5–7 days referencing a recent article or event. If you attended March Mingle XX, mention it.
+• <strong>Find someone new</strong> — keep the pipeline fresh with a new daily pick.
 
-<strong>The angle:</strong> His recent Substack piece about tasting cultivated bluefin tuna at BlueNalu\u2019s facility with a live sushi chef \u2014 reference this specific piece for a natural conversation hook.
-
-<strong>Next step:</strong> Respond to one of his newsletter emails or reach out directly referencing that specific piece.</div>`,
+<strong>Gmail draft created</strong> referencing his Discovery Night piece and your shared interest in SD's tech community. His portfolio companies likely need experienced finance leadership.</div>`,
     history: [
       {
+        date: "Mar 24, 2026",
+        headline: "Neal Bloom — no reply yet; follow-up options drafted",
+        detail: `Maxwell reported that Neal Bloom (Rising Tide Partners) didn't reply to the initial outreach. Two paths forward: (1) a short follow-up after 5–7 days referencing a recent article or event, especially March Mingle XX; (2) moving on to a fresh daily pick to keep the pipeline active. Gmail draft is ready to customize.`
+      },
+      {
         date: "Mar 23, 2026",
-        headline: "Neal Bloom \u2014 Rising Tide Partners / Interlock Capital",
-        detail: `San Diego-based investor focused on food tech and growth-stage companies (BlueNalu is in his portfolio). You already subscribe to his Substack, giving a ready-made conversation hook: his piece on tasting cultivated bluefin tuna at BlueNalu. As a PE/M&A finance exec, you\u2019re exactly the profile his portfolio companies need at the CFO level. A draft outreach message was prepared in your voice (casual, direct, referencing the specific newsletter piece).`
+        headline: "Neal Bloom — Rising Tide Partners / Interlock Capital",
+        detail: `San Diego-based investor focused on food tech and growth-stage companies (BlueNalu is in his portfolio). You already subscribe to his Substack, giving a ready-made conversation hook: his piece on tasting cultivated bluefin tuna at BlueNalu. A draft outreach message was prepared in your voice (casual, direct, referencing the specific newsletter piece).`
       },
       {
         date: "Mar 22, 2026",
-        headline: "Neal Bloom \u2014 Rising Tide Partners (repeat pick, refined pitch)",
-        detail: `Neal was also selected on Mar 22 based on the Substack newsletter angle. The coffee outreach dashboard was built with tracking: Draft Ready \u2192 Sent \u2192 Replied \u2192 Met. Copy button for grabbing the outreach message was included.
+        headline: "Neal Bloom — Rising Tide Partners (repeat pick, refined pitch)",
+        detail: `Neal was also selected on Mar 22 based on the Substack newsletter angle. The coffee outreach dashboard was built with tracking: Draft Ready → Sent → Replied → Met.
 
 <div class="highlight-box"><strong>Status:</strong> Draft outreach message ready. Dashboard tracks all picks and their progress over time.</div>`
       }
@@ -502,30 +531,26 @@ Neal is a San Diego-based investor deeply embedded in the local startup scene th
     id: "riddles",
     name: "Daily Riddle",
     description: "A magical daily riddle spanning Harry Potter & KOTLC",
-    icon: "\u2728",
+    icon: "✨",
     iconClass: "riddle",
-    schedule: "Every day at 9:01 AM",
-    enabled: true,
-    nextRunAt: "2026-03-24T16:00:44.000Z",
+    schedule: "Paused",
+    enabled: false,
+    nextRunAt: null,
     lastRunAt: "2026-03-23T16:08:57.832Z",
-    latestOutput: `<strong>Today\u2019s Riddle \u2014 March 23, 2026</strong>
+    latestOutput: `<strong>Last Riddle — March 23, 2026</strong>
 
-<blockquote>\u201CHermione would never leave home without me near, and Sophie brought me along to face her fear. I hold a thousand worlds within my spine\u2026\u201D</blockquote>
+<blockquote>"Hermione would never leave home without me near, and Sophie brought me along to face her fear. I hold a thousand worlds within my spine…"</blockquote>
 
-<div class="highlight-box"><strong>Answer: A Book! \u{1F4DA}</strong>
+<div class="highlight-box"><strong>Answer: A Book! 📚</strong>
 
-Today\u2019s riddle spans both <strong>Harry Potter</strong> and <strong>Keeper of the Lost Cities</strong>.</div>
+Today's riddle spans both <strong>Harry Potter</strong> and <strong>Keeper of the Lost Cities</strong>.</div>
 
-<strong>Dashboard features:</strong>
-\u2022 Magical starfield background with floating \u26A1\u{1F989}\u{1F33F} particles
-\u2022 \u201CReveal the Answer\u201D button with sparkle-burst animation
-\u2022 Three hint cards (one per universe + a super hint)
-\u2022 Fun facts connecting both series to the answer`,
+<em>⚠️ This task is currently paused.</em>`,
     history: [
       {
         date: "Mar 23, 2026",
-        headline: "\u201CHermione would never leave home without me\u2026\u201D \u2014 Answer: A Book \u{1F4DA}",
-        detail: `Riddle spanning Harry Potter and Keeper of the Lost Cities. Dashboard includes a magical starfield background with floating particles, a \u201CReveal the Answer\u201D button with sparkle-burst animation, three hint cards (one per universe + a super hint), and fun facts connecting both series to the answer.`
+        headline: "\"Hermione would never leave home without me…\" — Answer: A Book 📚",
+        detail: `Riddle spanning Harry Potter and Keeper of the Lost Cities. Dashboard includes a magical starfield background with floating particles, a "Reveal the Answer" button with sparkle-burst animation, three hint cards (one per universe + a super hint), and fun facts connecting both series to the answer.`
       }
     ]
   },
@@ -533,30 +558,30 @@ Today\u2019s riddle spans both <strong>Harry Potter</strong> and <strong>Keeper 
     id: "ninjago",
     name: "Ninjago Fact",
     description: "Daily fun Ninjago fact with interactive dashboard",
-    icon: "\u{1F977}",
+    icon: "🥷",
     iconClass: "ninjago",
-    schedule: "Every day at 9:05 AM",
-    enabled: true,
-    nextRunAt: "2026-03-24T16:04:56.000Z",
+    schedule: "Paused",
+    enabled: false,
+    nextRunAt: null,
     lastRunAt: "2026-03-23T17:16:00.055Z",
-    latestOutput: `<strong>Today\u2019s Fact \u2014 March 23, 2026</strong>
+    latestOutput: `<strong>Last Fact — March 23, 2026</strong>
 <em>Day 82 of the year</em>
 
-<div class="highlight-box"><strong>\u{1F977} Zane the White Ninja</strong> is actually a robot called a <em>Nindroid</em> \u2014 and he didn\u2019t even know it himself until a special mission revealed the truth!
+<div class="highlight-box"><strong>🥷 Zane the White Ninja</strong> is actually a robot called a <em>Nindroid</em> — and he didn't even know it himself until a special mission revealed the truth!
 
 Zane is the Ninja of Ice, and discovering his true nature was one of the most emotional moments in the entire Ninjago series. Despite being a robot, he has a heart as warm as any human ninja.</div>
 
-<em>Each day brings a new fact from the world of Ninjago, delivered in a fun interactive dashboard.</em>`,
+<em>⚠️ This task is currently paused.</em>`,
     history: [
       {
         date: "Mar 23, 2026",
         headline: "Zane the White Ninja is actually a Nindroid (robot)!",
-        detail: `Zane is the Ninja of Ice and a robot called a Nindroid. He didn\u2019t know it himself until a special mission revealed the truth. Discovering his true nature was one of the most emotional moments in the series. Despite being a robot, he has a heart as warm as any human ninja.`
+        detail: `Zane is the Ninja of Ice and a robot called a Nindroid. He didn't know it himself until a special mission revealed the truth. Discovering his true nature was one of the most emotional moments in the series. Despite being a robot, he has a heart as warm as any human ninja.`
       },
       {
         date: "Mar 22, 2026",
-        headline: "Cole is the Black Ninja \u2014 his power is Earth (and he loves cake! \u{1F382})",
-        detail: `Cole\u2019s elemental power is Earth, making him the strongest of all the ninja. His fun quirk: he loves cake more than anything! This was Day 1 of the Ninjago fact series. The dashboard launched with a dark space-ninja theme, a highlighted card for today\u2019s fact, a growing fact log, and a ninja powers reference guide.`
+        headline: "Cole is the Black Ninja — his power is Earth (and he loves cake! 🎂)",
+        detail: `Cole's elemental power is Earth, making him the strongest of all the ninja. His fun quirk: he loves cake more than anything! This was Day 1 of the Ninjago fact series. The dashboard launched with a dark space-ninja theme, a highlighted card for today's fact, a growing fact log, and a ninja powers reference guide.`
       }
     ]
   }
